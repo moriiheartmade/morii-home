@@ -32,8 +32,8 @@ A modern, minimalist e-commerce platform for selling PDF sewing patterns. Built 
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/YOUR_USERNAME/pdf-morii.git
-cd pdf-morii
+git clone https://github.com/moriiheartmade/morii-home.git
+cd morii-home
 ```
 
 2. **Install dependencies**
@@ -127,3 +127,7 @@ Private - All rights reserved.
 
 - Design inspiration: [sydgraham.com](https://sydgraham.com)
 - Code structure reference: Ebook Mind project
+=======
+# morii-home
+PDF sewing patterns e-commerce
+>>>>>>> e4535d1fd811dba361d70b59af49e4ad18e61a38
