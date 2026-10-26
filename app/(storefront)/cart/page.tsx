@@ -1,14 +1,13 @@
 'use client'
 
-import { useCart } from '@/contexts/cart-context'
+import { useCart } from '@/lib/cart-context'
 import { Trash2, ShoppingBag } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 
 export default function CartPage() {
-  const { items, removeFromCart, getCartTotal } = useCart()
-  const totalPrice = getCartTotal()
+  const { items, removeItem, totalPrice } = useCart()
 
   if (items.length === 0) {
     return (
@@ -78,7 +77,7 @@ export default function CartPage() {
 
                   {/* Remove Button */}
                   <button
-                    onClick={() => removeFromCart(item.id)}
+                    onClick={() => removeItem(item.id)}
                     className="p-2 text-gray hover:text-error transition-smooth self-start"
                     aria-label="Remove item"
                   >

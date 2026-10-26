@@ -1,6 +1,6 @@
 'use client'
 
-import { useCart } from '@/contexts/cart-context'
+import { useCart } from '@/lib/cart-context'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -9,9 +9,8 @@ import { ArrowLeft, Mail, CreditCard } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 export default function CheckoutPage() {
-  const { items, getCartTotal, clearCart } = useCart()
+  const { items, totalPrice, clearCart } = useCart()
   const router = useRouter()
-  const totalPrice = getCartTotal()
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
