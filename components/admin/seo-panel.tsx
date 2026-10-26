@@ -36,7 +36,7 @@ export default function SEOPanel({
   const [showPreview, setShowPreview] = useState(false)
 
   const autoGenerateMetaTitle = () => {
-    const generated = `${title} - Morii Home`.slice(0, 60)
+    const generated = `${title} - Morii Heartmade`.slice(0, 60)
     onMetaTitleChange(generated)
   }
 
@@ -172,7 +172,7 @@ export default function SEOPanel({
           type="text"
           value={metaTitle}
           onChange={(e) => onMetaTitleChange(e.target.value)}
-          placeholder={`${title} - Morii Home`}
+          placeholder={`${title} - Morii Heartmade`}
           maxLength={60}
           className="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brown-warm focus:border-transparent"
         />
@@ -286,7 +286,7 @@ export default function SEOPanel({
           <div className="mt-3 p-4 bg-white border rounded-lg">
             <p className="text-xs text-gray-400 mb-2">Google Search Result Preview</p>
             <div className="text-blue-600 text-lg hover:underline cursor-pointer">
-              {metaTitle || `${title} - Morii Home`}
+              {metaTitle || `${title} - Morii Heartmade`}
             </div>
             <div className="text-green-700 text-sm">
               moriiheartmade.com › products › {slug}

@@ -188,10 +188,11 @@ export default function NewPatternPage() {
                   className="w-full border rounded-lg px-3 py-2 text-sm"
                 >
                   <option value="">Select category</option>
-                  <option value="bags">Bags</option>
-                  <option value="other">Other</option>
-                  <option value="accessories">Accessories</option>
                   <option value="home-decor">Home Decor</option>
+                  <option value="bags">Bags</option>
+                  <option value="keychains-plushies">Keychains / Plushies</option>
+                  <option value="accessories">Accessories</option>
+                  <option value="other">Other</option>
                 </select>
               </div>
               <div>

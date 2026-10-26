@@ -2,9 +2,10 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { ArrowLeft, Save, Send, FileText, Image as ImageIcon, Search } from 'lucide-react'
+import { ArrowLeft, Save, Send, FileText, Image as ImageIcon, Search, Eye } from 'lucide-react'
 import Link from 'next/link'
 import { convertDriveUrl } from '@/lib/utils'
+import RichTextEditor from '@/components/admin/rich-text-editor'
 
 const tabs = [
   { id: 'basic', label: 'Basic Info', icon: FileText },
@@ -195,17 +196,71 @@ export default function NewBlogPostPage() {
 
         {/* Tab: Content */}
         {activeTab === 'content' && (
-          <div className="space-y-6 max-w-4xl">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Blog Content</label>
-              <textarea
-                rows={20}
-                value={form.content}
-                onChange={(e) => setForm({ ...form, content: e.target.value })}
-                className="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brown-warm focus:border-transparent font-mono"
-                placeholder="Write your blog content here... (supports Markdown)"
-              />
-              <p className="text-xs text-gray-500 mt-1">Supports Markdown formatting</p>
+          <div className="space-y-6">
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900">Blog Content</h3>
+                <p className="text-sm text-gray-500">Write your blog post with rich formatting</p>
+              </div>
+              <div className="flex items-center gap-2 text-sm text-gray-500">
+                <Eye className="w-4 h-4" />
+                <span>Live Preview</span>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Editor */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Editor</label>
+                <RichTextEditor
+                  content={form.content}
+                  onChange={(content) => setForm({ ...form, content })}
+                  placeholder="Write your blog content here... Use headings (H2, H3), bold, italic, lists, links, and images to create engaging content."
+                />
+                <div className="mt-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                  <p className="text-xs text-blue-800 font-medium mb-1">💡 Tips for great blog posts:</p>
+                  <ul className="text-xs text-blue-700 space-y-1 ml-4 list-disc">
+                    <li>Use H2 for main sections, H3 for subsections</li>
+                    <li>Add emoji icons (🎨 ✂️ 💡) to make content more engaging</li>
+                    <li>Use bullet points and numbered lists for easy reading</li>
+                    <li>Include images to break up text</li>
+                    <li>Bold important keywords and phrases</li>
+                  </ul>
+                </div>
+              </div>
+
+              {/* Live Preview */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Preview</label>
+                <div className="border rounded-lg p-6 bg-white min-h-[400px] max-h-[600px] overflow-y-auto">
+                  {form.content ? (
+                    <div 
+                      className="prose prose-sm max-w-none
+                        prose-headings:font-heading prose-headings:text-black
+                        prose-h1:text-3xl prose-h1:font-semibold prose-h1:mb-4
+                        prose-h2:text-2xl prose-h2:font-semibold prose-h2:mt-8 prose-h2:mb-3
+                        prose-h3:text-xl prose-h3:font-semibold prose-h3:mt-6 prose-h3:mb-2
+                        prose-h4:text-lg prose-h4:font-semibold prose-h4:mt-4 prose-h4:mb-2
+                        prose-p:text-gray prose-p:leading-relaxed prose-p:mb-4
+                        prose-a:text-brown-warm prose-a:no-underline hover:prose-a:underline
+                        prose-strong:text-black prose-strong:font-semibold
+                        prose-ul:my-4 prose-ul:list-disc prose-ul:pl-6
+                        prose-ol:my-4 prose-ol:list-decimal prose-ol:pl-6
+                        prose-li:text-gray prose-li:mb-2
+                        prose-img:rounded-lg prose-img:shadow-md prose-img:my-6
+                      "
+                      dangerouslySetInnerHTML={{ __html: form.content }}
+                    />
+                  ) : (
+                    <div className="flex items-center justify-center h-full text-gray-400">
+                      <div className="text-center">
+                        <FileText className="w-12 h-12 mx-auto mb-2 opacity-50" />
+                        <p className="text-sm">Your content preview will appear here</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         )}

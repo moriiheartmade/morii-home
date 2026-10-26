@@ -1,4 +1,4 @@
-# 🚀 Morii Home - Deployment Checklist
+# 🚀 Morii Heartmade - Deployment Checklist
 
 ## ✅ Hoàn thành các tính năng
 
@@ -245,8 +245,8 @@ NEXT_PUBLIC_PAYPAL_CLIENT_ID=AYxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 # ============================================
 # 3. APP SETTINGS
 # ============================================
-NEXT_PUBLIC_APP_URL=https://moriihome.com
-NEXT_PUBLIC_DOMAIN=moriihome.com
+NEXT_PUBLIC_APP_URL=https://moriiheartmade.com
+NEXT_PUBLIC_DOMAIN=moriiheartmade.com
 
 # Download Settings
 DOWNLOAD_TOKEN_TTL_HOURS=48
@@ -283,7 +283,7 @@ git add .
 git commit -m "Initial commit"
 
 # Push to GitHub
-git remote add origin https://github.com/yourusername/morii-home.git
+git remote add origin https://github.com/yourusername/morii-heartmade.git
 git push -u origin main
 ```
 
@@ -295,7 +295,7 @@ git push -u origin main
 
 #### 5.3. Cấu hình Domain
 1. Trong Vercel Dashboard → Settings → Domains
-2. Add custom domain: `moriihome.com`
+2. Add custom domain: `moriiheartmade.com`
 3. Update DNS records theo hướng dẫn Vercel
 
 ---

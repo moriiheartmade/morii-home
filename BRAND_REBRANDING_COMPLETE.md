@@ -1,13 +1,13 @@
-# ✅ MORII HOME - REBRANDING HOÀN THÀNH
+# ✅ MORII HEARTMADE - REBRANDING HOÀN THÀNH
 
-**Hoàn thành**: May 14, 2026 at 9:30 AM
+**Hoàn thành**: Oct 26, 2026 at 9:01 PM
 
 ---
 
 ## 🎯 THÔNG TIN BRAND MỚI
 
 ### Brand Identity
-- **Tên**: Morii Home (trước: Morii Patterns)
+- **Tên**: Morii Heartmade (trước: Morii Home)
 - **Người sáng lập**: Một người - passion project cá nhân
 - **Kênh YouTube**: Kênh cá nhân (không phải team)
 - **Shopee Store**: Bán sản phẩm thật từ các mẫu PDF
@@ -38,7 +38,7 @@
 - ✅ `/app/admin/login/page.tsx`
 - ✅ `/components/product-highlights.tsx`
 
-**Change**: "Morii Patterns" → "Morii Home"
+**Change**: "Morii Patterns" → "Morii Home" → "Morii Heartmade"
 
 ### 2. Tagline & Descriptions
 
@@ -62,7 +62,7 @@ From my creative space to yours.
 ### 3. Homepage Hero
 
 **Updated**:
-- Title: "Morii Home"
+- Title: "Morii Heartmade"
 - Subtitle: Focus on home decor & business
 - Tone: Personal (my vs our)
 
@@ -73,9 +73,9 @@ From my creative space to yours.
 
 **New content**:
 ```
-Hi! I'm the creator behind Morii Home. I design detailed, 
-beginner-friendly PDF sewing patterns for home decor, bags, 
-and accessories - perfect for DIY enthusiasts and handmade 
+Hi! I'm the creator behind Morii Heartmade. I design detailed,
+beginner-friendly PDF sewing patterns for home decor, bags,
+and accessories - perfect for DIY enthusiasts and handmade
 business owners.
 
 Every pattern is tested in real life! I use these exact 
@@ -86,7 +86,7 @@ by customers who appreciate quality handmade items.
 ### 5. About Page
 
 **Major updates**:
-- Title: "About Morii Home"
+- Title: "About Morii Heartmade"
 - Tagline: "One person's passion for sewing, shared with the world"
 - Section: "Our Story" → "My Story"
 - Section: "Our Values" → "My Promise to You"
@@ -101,7 +101,7 @@ by customers who appreciate quality handmade items.
 ### 6. Product Highlights
 
 **Updated**:
-- Designer: "Morii Home" (was "Morii Heartmade")
+- Designer: "Morii Heartmade"
 - Label: "Perfect for" (was "Supplies for making")
 - Value: "Home decor & business" (was "Crafts & sewing")
 
@@ -116,7 +116,7 @@ by customers who appreciate quality handmade items.
 
 **Title**:
 ```
-Morii Home - Sewing Patterns for Home Decor & Handmade Business
+Morii Heartmade - Sewing Patterns for Home Decor & Handmade Business
 ```
 
 **Description**:
@@ -159,7 +159,7 @@ Proven designs sold on Shopee.
 
 | Aspect | Before | After |
 |--------|--------|-------|
-| **Brand** | Morii Patterns | Morii Home |
+| **Brand** | Morii Home | Morii Heartmade |
 | **Tone** | Team/Workshop | Personal/Solo |
 | **Focus** | Handmade creations | Home decor & business |
 | **Validation** | Mentioned | Emphasized (Shopee) |
@@ -207,12 +207,12 @@ Proven designs sold on Shopee.
 ## 🧪 VERIFICATION
 
 ### Check Brand Name
-- ✅ Navbar: "Morii Home"
-- ✅ Footer: "Morii Home"
-- ✅ Homepage Hero: "Morii Home"
-- ✅ About Page: "About Morii Home"
-- ✅ Admin: "Morii Home"
-- ✅ Browser Tab: "Morii Home - ..."
+- ✅ Navbar: "Morii Heartmade"
+- ✅ Footer: "Morii Heartmade"
+- ✅ Homepage Hero: "Morii Heartmade"
+- ✅ About Page: "About Morii Heartmade"
+- ✅ Admin: "Morii Heartmade"
+- ✅ Browser Tab: "Morii Heartmade - ..."
 
 ### Check Tone
 - ✅ Homepage: "my creative space"
@@ -231,7 +231,7 @@ Proven designs sold on Shopee.
 ## 🎊 HOÀN THÀNH!
 
 **Rebranding hoàn tất**:
-✅ Brand name: Morii Home
+✅ Brand name: Morii Heartmade
 ✅ Personal tone: I/my/me
 ✅ Target audience: Home decor + Business
 ✅ Shopee validation: Emphasized

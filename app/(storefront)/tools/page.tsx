@@ -1,7 +1,6 @@
-import { getSupabase } from '@/lib/db'
 import { ExternalLink } from 'lucide-react'
 
-export const revalidate = 3600
+export const revalidate = 86400
 
 // Mock data - sẽ được thay thế bằng database sau
 const mockTools = [
@@ -119,17 +118,8 @@ const mockTools = [
 ]
 
 export default async function ToolsPage() {
-  const supabase = getSupabase()
-
-  const { data: toolsData } = await supabase
-    .from('tools')
-    .select('*')
-    .eq('active', true)
-    .order('category', { ascending: true })
-    .order('created_at', { ascending: false })
-
-  // Use mock data if Supabase returns no data
-  const tools = toolsData && toolsData.length > 0 ? toolsData : mockTools
+  // Use mock data directly for instant loading
+  const tools = [...mockTools]
 
   // Group tools by category
   const categories = Array.from(new Set(tools.map((tool: any) => tool.category)))
@@ -159,14 +149,14 @@ export default async function ToolsPage() {
               {category}
             </h2>
               
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
                 {categoryTools.map((tool: any) => (
                   <div
                     key={tool.id}
                     className="bg-white border border-beige rounded-lg overflow-hidden hover-scale hover:shadow-md transition-smooth"
                   >
                     {/* Image */}
-                    <div className="relative aspect-square bg-beige overflow-hidden">
+                    <div className="relative aspect-[4/3] bg-beige overflow-hidden">
                       {tool.image_url ? (
                         <img
                           src={tool.image_url}
@@ -188,7 +178,7 @@ export default async function ToolsPage() {
                       </h3>
 
                       {/* Description */}
-                      <p className="text-gray text-sm mb-4 line-clamp-3">
+                      <p className="text-gray text-sm mb-4">
                         {tool.description}
                       </p>
 

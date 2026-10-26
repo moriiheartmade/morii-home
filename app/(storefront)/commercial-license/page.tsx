@@ -2,8 +2,8 @@ import Link from 'next/link'
 import { Check, X, ShoppingBag, Users, Building, HelpCircle } from 'lucide-react'
 
 export const metadata = {
-  title: 'Commercial License - Morii Home',
-  description: 'Learn about selling products made from Morii Home sewing patterns. Commercial license information and terms.',
+  title: 'Commercial License - Morii Heartmade',
+  description: 'Learn about selling products made from Morii Heartmade sewing patterns. Commercial license information and terms.'
 }
 
 export default function CommercialLicensePage() {
@@ -33,7 +33,7 @@ export default function CommercialLicensePage() {
                 Good News! You Can Sell Your Handmade Items
               </h2>
               <p className="text-gray leading-relaxed">
-                When you purchase a pattern from Morii Home, you are automatically granted the right to sell 
+                When you purchase a pattern from Morii Heartmade, you are automatically granted the right to sell 
                 finished products made from that pattern. No additional license purchase is required for 
                 small-scale handmade businesses.
               </p>
@@ -163,7 +163,7 @@ export default function CommercialLicensePage() {
               <li className="flex items-start gap-3">
                 <X className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
                 <span className="text-charcoal">
-                  <strong>Claiming the design as your own</strong> - Please credit "Pattern by Morii Home" 
+                  <strong>Claiming the design as your own</strong> - Please credit "Pattern by Morii Heartmade" 
                   when selling finished items
                 </span>
               </li>
@@ -179,18 +179,18 @@ export default function CommercialLicensePage() {
           
           <div className="bg-cream rounded-lg p-6">
             <p className="text-gray mb-4">
-              When selling finished items, I kindly ask that you include a credit to Morii Home. 
+              When selling finished items, I kindly ask that you include a credit to Morii Heartmade. 
               Here are some examples:
             </p>
             <div className="space-y-3">
               <div className="bg-white rounded p-4 border border-beige">
-                <p className="text-charcoal italic">"Made using a pattern by Morii Home"</p>
+                <p className="text-charcoal italic">"Made using a pattern by Morii Heartmade"</p>
               </div>
               <div className="bg-white rounded p-4 border border-beige">
-                <p className="text-charcoal italic">"Pattern: @moriihome"</p>
+                <p className="text-charcoal italic">"Pattern: @moriiheartmade"</p>
               </div>
               <div className="bg-white rounded p-4 border border-beige">
-                <p className="text-charcoal italic">"Design by Morii Home - moriihome.com"</p>
+                <p className="text-charcoal italic">"Design by Morii Heartmade - moriiheartmade.com"</p>
               </div>
             </div>
           </div>

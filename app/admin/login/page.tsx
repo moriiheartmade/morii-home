@@ -44,7 +44,7 @@ export default function AdminLoginPage() {
       <div className="max-w-md w-full">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-heading font-semibold text-black mb-2">
-            Morii Home
+            Morii Heartmade
           </h1>
           <p className="text-gray">Admin Dashboard</p>
         </div>

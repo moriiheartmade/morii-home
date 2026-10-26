@@ -7,9 +7,9 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
-          <div>
+          <div className="md:col-span-1">
             <h3 className="font-heading text-xl font-semibold text-white mb-4">
-              Morii Home
+              Morii Heartmade
             </h3>
             <p className="text-gray-light text-sm leading-relaxed">
               PDF sewing patterns for home decor and handmade business. From my creative space to yours.
@@ -43,13 +43,13 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Shop */}
+          {/* Sewing Patterns */}
           <div>
-            <h4 className="text-base font-semibold text-white mb-4">Shop</h4>
+            <h4 className="text-base font-semibold text-white mb-4">Sewing Patterns</h4>
             <ul className="space-y-2 text-sm text-gray-light">
               <li>
-                <Link href="/products" className="hover:text-white transition-smooth">
-                  All Patterns
+                <Link href="/products?category=home-decor" className="hover:text-white transition-smooth">
+                  Home Decor
                 </Link>
               </li>
               <li>
@@ -58,8 +58,8 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/products?category=other" className="hover:text-white transition-smooth">
-                  Other
+                <Link href="/products?category=keychains-plushies" className="hover:text-white transition-smooth">
+                  Keychains/Plushies
                 </Link>
               </li>
               <li>
@@ -68,30 +68,8 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/tools" className="hover:text-white transition-smooth">
-                  Home Decor
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Learn */}
-          <div>
-            <h4 className="text-base font-semibold text-white mb-4">Learn</h4>
-            <ul className="space-y-2 text-sm text-gray-light">
-              <li>
-                <Link href="/learn-to-sew" className="hover:text-white transition-smooth">
-                  Sewing Tutorials
-                </Link>
-              </li>
-              <li>
-                <Link href="/blog" className="hover:text-white transition-smooth">
-                  Blog
-                </Link>
-              </li>
-              <li>
-                <Link href="/faq" className="hover:text-white transition-smooth">
-                  FAQ
+                <Link href="/products?category=other" className="hover:text-white transition-smooth">
+                  Other
                 </Link>
               </li>
             </ul>
@@ -128,12 +106,34 @@ export default function Footer() {
               </li>
             </ul>
           </div>
+
+          {/* Resources */}
+          <div>
+            <h4 className="text-base font-semibold text-white mb-4">Resources</h4>
+            <ul className="space-y-2 text-sm text-gray-light">
+              <li>
+                <Link href="/tools" className="hover:text-white transition-smooth">
+                  Tools
+                </Link>
+              </li>
+              <li>
+                <Link href="/blog" className="hover:text-white transition-smooth">
+                  Blog
+                </Link>
+              </li>
+              <li>
+                <Link href="/faq" className="hover:text-white transition-smooth">
+                  FAQ
+                </Link>
+              </li>
+            </ul>
+          </div>
         </div>
 
         {/* Bottom Bar */}
         <div className="mt-12 pt-8 border-t border-gray text-center text-sm text-gray-light">
           <p>
-            &copy; {new Date().getFullYear()} Morii Home. All rights reserved.
+            &copy; {new Date().getFullYear()} Morii Heartmade. All rights reserved.
           </p>
         </div>
       </div>

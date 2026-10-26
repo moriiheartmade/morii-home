@@ -1,4 +1,4 @@
-import { getSupabaseAdmin } from '@/lib/db'
+import { getSupabaseAdmin, supabaseQueryWithTimeout } from '@/lib/db'
 import {
   ShoppingCart,
   CheckCircle,
@@ -24,61 +24,112 @@ export default async function PaymentAnalyticsPage() {
   const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
   const startOfYear = new Date(now.getFullYear(), 0, 1)
 
-  // Fetch all stats in parallel
+  // Fetch all stats in parallel with timeout
   const [
-    { count: totalOrders },
-    { count: completedOrders },
-    { count: pendingOrders },
-    { data: allRevenue },
-    { data: todayRevenue },
-    { data: weekRevenue },
-    { data: monthRevenue },
-    { data: yearRevenue },
-    { data: revenueByProvider },
-    { data: revenueByPattern },
+    totalOrdersResult,
+    completedOrdersResult,
+    pendingOrdersResult,
+    allRevenueResult,
+    todayRevenueResult,
+    weekRevenueResult,
+    monthRevenueResult,
+    yearRevenueResult,
+    revenueByProviderResult,
+    revenueByPatternResult,
   ] = await Promise.all([
-    supabase.from('orders').select('*', { count: 'exact', head: true }),
-    supabase.from('orders').select('*', { count: 'exact', head: true }).eq('status', 'completed'),
-    supabase.from('orders').select('*', { count: 'exact', head: true }).eq('status', 'pending'),
-    supabase.from('orders').select('amount').eq('status', 'completed'),
-    supabase
-      .from('orders')
-      .select('amount')
-      .eq('status', 'completed')
-      .gte('created_at', startOfToday.toISOString()),
-    supabase
-      .from('orders')
-      .select('amount')
-      .eq('status', 'completed')
-      .gte('created_at', startOfWeek.toISOString()),
-    supabase
-      .from('orders')
-      .select('amount')
-      .eq('status', 'completed')
-      .gte('created_at', startOfMonth.toISOString()),
-    supabase
-      .from('orders')
-      .select('amount')
-      .eq('status', 'completed')
-      .gte('created_at', startOfYear.toISOString()),
-    supabase
-      .from('orders')
-      .select('amount, paypal_order_id')
-      .eq('status', 'completed'),
-    supabase
-      .from('order_items')
-      .select('unit_price, quantity, patterns(title, cover_url)')
-      .not('patterns', 'is', null),
+    supabaseQueryWithTimeout(
+      supabase.from('orders').select('*', { count: 'exact', head: true }),
+      5000,
+      { count: 0 }
+    ),
+    supabaseQueryWithTimeout(
+      supabase.from('orders').select('*', { count: 'exact', head: true }).eq('status', 'completed'),
+      5000,
+      { count: 0 }
+    ),
+    supabaseQueryWithTimeout(
+      supabase.from('orders').select('*', { count: 'exact', head: true }).eq('status', 'pending'),
+      5000,
+      { count: 0 }
+    ),
+    supabaseQueryWithTimeout(
+      supabase.from('orders').select('amount').eq('status', 'completed'),
+      5000,
+      { data: [] }
+    ),
+    supabaseQueryWithTimeout(
+      supabase
+        .from('orders')
+        .select('amount')
+        .eq('status', 'completed')
+        .gte('created_at', startOfToday.toISOString()),
+      5000,
+      { data: [] }
+    ),
+    supabaseQueryWithTimeout(
+      supabase
+        .from('orders')
+        .select('amount')
+        .eq('status', 'completed')
+        .gte('created_at', startOfWeek.toISOString()),
+      5000,
+      { data: [] }
+    ),
+    supabaseQueryWithTimeout(
+      supabase
+        .from('orders')
+        .select('amount')
+        .eq('status', 'completed')
+        .gte('created_at', startOfMonth.toISOString()),
+      5000,
+      { data: [] }
+    ),
+    supabaseQueryWithTimeout(
+      supabase
+        .from('orders')
+        .select('amount')
+        .eq('status', 'completed')
+        .gte('created_at', startOfYear.toISOString()),
+      5000,
+      { data: [] }
+    ),
+    supabaseQueryWithTimeout(
+      supabase
+        .from('orders')
+        .select('amount, paypal_order_id')
+        .eq('status', 'completed'),
+      5000,
+      { data: [] }
+    ),
+    supabaseQueryWithTimeout(
+      supabase
+        .from('order_items')
+        .select('unit_price, quantity, patterns(title, cover_url)')
+        .not('patterns', 'is', null),
+      5000,
+      { data: [] }
+    ),
   ])
 
-  const totalRevenue = allRevenue?.reduce((sum, o) => sum + Number(o.amount || 0), 0) || 0
-  const todayRev = todayRevenue?.reduce((sum, o) => sum + Number(o.amount || 0), 0) || 0
-  const weekRev = weekRevenue?.reduce((sum, o) => sum + Number(o.amount || 0), 0) || 0
-  const monthRev = monthRevenue?.reduce((sum, o) => sum + Number(o.amount || 0), 0) || 0
-  const yearRev = yearRevenue?.reduce((sum, o) => sum + Number(o.amount || 0), 0) || 0
+  const totalOrders = totalOrdersResult.count
+  const completedOrders = completedOrdersResult.count
+  const pendingOrders = pendingOrdersResult.count
+  const allRevenue = allRevenueResult.data
+  const todayRevenue = todayRevenueResult.data
+  const weekRevenue = weekRevenueResult.data
+  const monthRevenue = monthRevenueResult.data
+  const yearRevenue = yearRevenueResult.data
+  const revenueByProvider = revenueByProviderResult.data
+  const revenueByPattern = revenueByPatternResult.data
+
+  const totalRevenue = (allRevenue as any[])?.reduce((sum, o) => sum + Number(o.amount || 0), 0) || 0
+  const todayRev = (todayRevenue as any[])?.reduce((sum, o) => sum + Number(o.amount || 0), 0) || 0
+  const weekRev = (weekRevenue as any[])?.reduce((sum, o) => sum + Number(o.amount || 0), 0) || 0
+  const monthRev = (monthRevenue as any[])?.reduce((sum, o) => sum + Number(o.amount || 0), 0) || 0
+  const yearRev = (yearRevenue as any[])?.reduce((sum, o) => sum + Number(o.amount || 0), 0) || 0
 
   // Calculate revenue by provider
-  const paypalRevenue = revenueByProvider?.reduce((sum, o) => sum + Number(o.amount || 0), 0) || 0
+  const paypalRevenue = (revenueByProvider as any[])?.reduce((sum, o) => sum + Number(o.amount || 0), 0) || 0
 
   // Calculate revenue by pattern
   const patternRevenue = new Map<string, { title: string; revenue: number; count: number; cover_url: string | null }>()

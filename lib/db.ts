@@ -20,5 +20,40 @@ export function getSupabaseAdmin() {
       autoRefreshToken: false,
       persistSession: false,
     },
+    global: {
+      headers: {
+        Connection: 'keep-alive',
+      },
+    },
+    db: {
+      schema: 'public',
+    },
   })
+}
+
+// Helper function to add timeout to Supabase queries
+export async function withTimeout<T>(
+  promise: Promise<T>,
+  timeoutMs: number = 5000,
+  defaultValue: T
+): Promise<T> {
+  const timeoutPromise = new Promise<T>((resolve) => {
+    setTimeout(() => resolve(defaultValue), timeoutMs)
+  })
+  
+  try {
+    return await Promise.race([promise, timeoutPromise])
+  } catch (error) {
+    console.error('Query error or timeout:', error)
+    return defaultValue
+  }
+}
+
+// Helper for Supabase queries with timeout
+export async function supabaseQueryWithTimeout<T>(
+  query: any,
+  timeoutMs: number = 3000,
+  defaultValue: T
+): Promise<T> {
+  return withTimeout(query, timeoutMs, defaultValue)
 }

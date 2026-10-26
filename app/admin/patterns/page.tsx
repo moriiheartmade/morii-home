@@ -1,4 +1,4 @@
-import { getSupabaseAdmin } from '@/lib/db'
+import { getSupabaseAdmin, supabaseQueryWithTimeout } from '@/lib/db'
 import { formatCurrency, convertDriveUrl } from '@/lib/utils'
 import { Plus, Edit, Trash2, Eye, EyeOff } from 'lucide-react'
 import Link from 'next/link'
@@ -9,10 +9,15 @@ export const revalidate = 0
 export default async function AdminPatternsPage() {
   const supabase = getSupabaseAdmin()
 
-  const { data: patternsData, error } = await supabase
-    .from('patterns')
-    .select('*')
-    .order('created_at', { ascending: false })
+  const result = await supabaseQueryWithTimeout(
+    supabase
+      .from('patterns')
+      .select('*')
+      .order('created_at', { ascending: false }),
+    5000,
+    { data: [] }
+  )
+  const patternsData = result.data
   
   // Use mock data if Supabase returns no data
   const patterns = patternsData && patternsData.length > 0 ? patternsData : mockPatterns

@@ -1,32 +1,71 @@
-import { getSupabaseAdmin } from '@/lib/db'
+import { getSupabaseAdmin, supabaseQueryWithTimeout } from '@/lib/db'
 import { Package, ShoppingCart, CheckCircle, Clock, TrendingUp } from 'lucide-react'
 import { formatCurrency } from '@/lib/utils'
+import { cache } from 'react'
 
-export const revalidate = 0
+export const revalidate = 30
 
-export default async function AdminDashboardPage() {
+// Cache the dashboard data fetch
+const fetchDashboardData = cache(async () => {
   const supabase = getSupabaseAdmin()
 
-  // Fetch stats
   const [
-    { count: totalPatterns },
-    { count: totalOrdersCompleted },
-    { count: totalOrdersPending },
-    { data: revenueData },
-    { data: recentOrders },
+    totalPatternsResult,
+    totalOrdersCompletedResult,
+    totalOrdersPendingResult,
+    revenueDataResult,
+    recentOrdersResult,
   ] = await Promise.all([
-    supabase.from('patterns').select('*', { count: 'exact', head: true }).eq('active', true),
-    supabase.from('orders').select('*', { count: 'exact', head: true }).eq('status', 'completed'),
-    supabase.from('orders').select('*', { count: 'exact', head: true }).eq('status', 'pending'),
-    supabase.from('orders').select('amount').eq('status', 'completed'),
-    supabase
-      .from('orders')
-      .select('*, order_items(*, patterns(title))')
-      .order('created_at', { ascending: false })
-      .limit(10),
+    supabaseQueryWithTimeout(
+      supabase.from('patterns').select('*', { count: 'exact', head: true }).eq('active', true),
+      1000,
+      { count: 0 }
+    ),
+    supabaseQueryWithTimeout(
+      supabase.from('orders').select('*', { count: 'exact', head: true }).eq('status', 'completed'),
+      1000,
+      { count: 0 }
+    ),
+    supabaseQueryWithTimeout(
+      supabase.from('orders').select('*', { count: 'exact', head: true }).eq('status', 'pending'),
+      1000,
+      { count: 0 }
+    ),
+    supabaseQueryWithTimeout(
+      supabase.from('orders').select('amount').eq('status', 'completed'),
+      1000,
+      { data: [] }
+    ),
+    supabaseQueryWithTimeout(
+      supabase
+        .from('orders')
+        .select('id, order_code, email, amount, status, created_at, order_items(id)')
+        .order('created_at', { ascending: false })
+        .limit(10),
+      1000,
+      { data: [] }
+    ),
   ])
 
-  const totalRevenue = revenueData?.reduce((sum, order) => sum + Number(order.amount || 0), 0) || 0
+  return {
+    totalPatterns: totalPatternsResult.count || 0,
+    totalOrdersCompleted: totalOrdersCompletedResult.count || 0,
+    totalOrdersPending: totalOrdersPendingResult.count || 0,
+    revenueData: revenueDataResult.data || [],
+    recentOrders: recentOrdersResult.data || [],
+  }
+})
+
+export default async function AdminDashboardPage() {
+  const {
+    totalPatterns,
+    totalOrdersCompleted,
+    totalOrdersPending,
+    revenueData,
+    recentOrders,
+  } = await fetchDashboardData()
+
+  const totalRevenue = (revenueData as any[])?.reduce((sum, order) => sum + Number(order.amount || 0), 0) || 0
 
   const stats = [
     {

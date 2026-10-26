@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ArrowRight, Scissors, Heart, Star, Package, Shirt, Home, Sparkles } from 'lucide-react'
+import { ArrowRight, Scissors, Heart, Star, Package, Shirt, Home, Sparkles, KeyRound } from 'lucide-react'
 import { mockPatterns, mockCategories } from '@/lib/mock-data'
 import ProductCard from '@/components/product-card'
 
@@ -14,7 +14,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-5xl md:text-7xl font-heading font-semibold text-black mb-6">
-              Morii Home
+              Morii Heartmade
             </h1>
             <p className="text-xl md:text-2xl text-gray max-w-3xl mx-auto mb-8 leading-relaxed">
               PDF sewing patterns for home decor and handmade business.
@@ -48,10 +48,10 @@ export default function HomePage() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-4xl md:text-5xl font-heading font-semibold text-black mb-6">
-                About Morii Home
+                About Morii Heartmade
               </h2>
               <p className="text-lg text-gray mb-4 leading-relaxed">
-                Hi! I'm the creator behind Morii Home. I design detailed, beginner-friendly PDF sewing patterns
+                Hi! I'm the creator behind Morii Heartmade. I design detailed, beginner-friendly PDF sewing patterns
                 for home decor, bags, and accessories - perfect for DIY enthusiasts and handmade business owners.
               </p>
               <p className="text-lg text-gray mb-6 leading-relaxed">
@@ -66,9 +66,11 @@ export default function HomePage() {
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
-            <div className="bg-beige rounded-lg h-96 flex items-center justify-center">
-              <p className="text-gray-light">Image placeholder</p>
-            </div>
+            <img 
+              src="/images/morii-home-4.jpg" 
+              alt="About Morii Heartmade" 
+              className="rounded-lg h-96 w-full object-cover"
+            />
           </div>
         </div>
       </section>
@@ -76,43 +78,71 @@ export default function HomePage() {
       {/* Categories Section */}
       <section className="py-20 bg-cream">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-heading font-semibold text-black mb-4">
-              Shop by Category
-            </h2>
-            <p className="text-lg text-gray">
-              Find the perfect pattern for your next project
-            </p>
-          </div>
+          <div className="grid md:grid-cols-5 gap-12 items-center">
+            {/* Left: Title & Description */}
+            <div className="md:col-span-2">
+              <h2 className="text-4xl md:text-5xl font-heading font-semibold text-black mb-4">
+                Shop by Category
+              </h2>
+              <p className="text-lg text-gray mb-6 leading-relaxed">
+                Find the perfect pattern for your next project.
+              </p>
+              <Link
+                href="/products"
+                className="inline-flex items-center gap-2 text-brown-warm font-medium hover:text-brown-dark transition-smooth"
+              >
+                View All Patterns
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {mockCategories.map((category) => {
-              const icons = {
-                bags: Package,
-                other: Shirt,
-                accessories: Sparkles,
-                'home-decor': Home,
-              }
-              const Icon = icons[category.slug as keyof typeof icons] || Package
+            {/* Right: Category Grid */}
+            <div className="md:col-span-3 grid grid-cols-2 gap-4">
+              {/* All Category */}
+              <Link
+                href="/products"
+                className="group bg-white rounded-lg p-6 text-center hover-scale hover:bg-beige transition-smooth border border-beige"
+              >
+                <div className="inline-flex items-center justify-center w-10 h-10 bg-cream rounded-full mb-3 group-hover:bg-brown-warm group-hover:text-white transition-smooth">
+                  <Star className="w-5 h-5 text-brown-warm group-hover:text-white" />
+                </div>
+                <h3 className="font-heading text-lg font-semibold text-black mb-1 group-hover:text-brown-warm transition-smooth">
+                  All Patterns
+                </h3>
+                <p className="text-sm text-gray line-clamp-2">
+                  Browse all our sewing patterns
+                </p>
+              </Link>
 
-              return (
-                <Link
-                  key={category.id}
-                  href={`/products?category=${category.slug}`}
-                  className="group bg-cream rounded-lg p-8 text-center hover-scale hover:bg-beige transition-smooth border border-beige"
-                >
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-white rounded-full mb-4 group-hover:bg-brown-warm group-hover:text-white transition-smooth">
-                    <Icon className="w-8 h-8 text-brown-warm group-hover:text-white" />
-                  </div>
-                  <h3 className="font-heading text-xl font-semibold text-black mb-2 group-hover:text-brown-warm transition-smooth">
-                    {category.name}
-                  </h3>
-                  <p className="text-sm text-gray">
-                    {category.description}
-                  </p>
-                </Link>
-              )
-            })}
+              {mockCategories.map((category) => {
+                const icons = {
+                  bags: Package,
+                  'keychains-plushies': KeyRound,
+                  accessories: Sparkles,
+                  'home-decor': Home,
+                  other: Scissors,
+                }
+                const Icon = icons[category.slug as keyof typeof icons] || Package
+
+                return (
+                  <Link
+                    key={category.id}
+                    href={`/products?category=${category.slug}`}
+                    className="group bg-white rounded-lg p-6 text-center hover-scale hover:bg-beige transition-smooth border border-beige"
+                  >
+                    <div className="inline-flex items-center justify-center w-10 h-10 bg-cream rounded-full mb-3 group-hover:bg-brown-warm group-hover:text-white transition-smooth">
+                      <Icon className="w-5 h-5 text-brown-warm group-hover:text-white" />
+                    </div>
+                    <h3 className="font-heading text-lg font-semibold text-black mb-1 group-hover:text-brown-warm transition-smooth">
+                      {category.name}
+                    </h3>
+                    <p className="text-sm text-gray line-clamp-2">
+                      {category.description}
+                    </p>
+                  </Link>
+                )
+              })}
+            </div>
           </div>
         </div>
       </section>
@@ -132,27 +162,34 @@ export default function HomePage() {
           <div className="grid lg:grid-cols-5 gap-8 items-center">
             {/* YouTube Video - 3 columns */}
             <div className="lg:col-span-3">
-              <div className="bg-white rounded-lg overflow-hidden border border-beige">
-                <div className="aspect-video">
-                  <iframe
-                    width="100%"
-                    height="100%"
-                    src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
-                    title="Morii Home YouTube Video"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    className="w-full h-full"
-                  ></iframe>
+              <a
+                href="https://youtube.com/@moriiheartmade"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block bg-white rounded-lg overflow-hidden border border-beige hover:shadow-lg transition-smooth"
+              >
+                <div className="aspect-video relative">
+                  <img
+                    src="/images/moriihome-1.png"
+                    alt="Morii Heartmade YouTube Channel"
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                    <div className="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center hover:bg-red-700 transition-smooth">
+                      <svg className="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z"/>
+                      </svg>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              </a>
             </div>
 
             {/* Content - 2 columns */}
             <div className="lg:col-span-2 space-y-6">
               <div>
                 <h3 className="text-2xl font-heading font-semibold text-black mb-4">
-                  Follow Morii Home
+                  Follow Morii Heartmade
                 </h3>
                 <p className="text-lg text-gray mb-6 leading-relaxed">
                   The channel shares sewing tutorials, stories about building a small business, and my reflections on daily life. I hope they are useful to you.
@@ -180,7 +217,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-heading font-semibold text-black mb-4">
-              Morii Home Patterns Are Trusted by Many Customers
+              Morii Patterns Are Trusted by Many Customers
             </h2>
             <p className="text-xl text-gray max-w-3xl mx-auto">
               Each pattern comes with detailed instructions. Loved by many customers and successfully sewn.
@@ -224,7 +261,7 @@ export default function HomePage() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
                     </div>
-                    <span className="text-gray">5,000+ Shopee sales</span>
+                    <span className="text-gray">30,000+ Shopee sales</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="w-6 h-6 bg-success rounded-full flex items-center justify-center flex-shrink-0">
@@ -254,9 +291,11 @@ export default function HomePage() {
                 </a>
               </div>
               <div className="bg-cream rounded-lg p-6">
-                <div className="aspect-video bg-beige rounded-lg flex items-center justify-center mb-4">
-                  <p className="text-gray-light">Shopee Store Screenshot</p>
-                </div>
+                <img
+                  src="/images/morii-home-5.jpg"
+                  alt="Shopee Store"
+                  className="w-full rounded-lg mb-4"
+                />
                 <div className="flex items-center gap-4 mb-4">
                   <div className="flex -space-x-2">
                     {[1, 2, 3, 4, 5].map((i) => (
@@ -421,10 +460,14 @@ export default function HomePage() {
           <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
             <input
               type="email"
+              id="newsletter-email"
               placeholder="Enter your email"
               className="flex-1 px-4 py-3 border border-beige rounded-lg focus:outline-none focus:ring-2 focus:ring-brown-warm"
             />
-            <button className="bg-brown-warm text-white px-8 py-3 rounded-lg font-medium hover:bg-brown-dark transition-smooth whitespace-nowrap">
+            <button
+              id="newsletter-submit"
+              className="bg-brown-warm text-white px-8 py-3 rounded-lg font-medium hover:bg-brown-dark transition-smooth whitespace-nowrap"
+            >
               Subscribe
             </button>
           </div>
@@ -433,6 +476,59 @@ export default function HomePage() {
           </p>
         </div>
       </section>
+
+      <script dangerouslySetInnerHTML={{
+        __html: `
+          (function() {
+            const emailInput = document.getElementById('newsletter-email');
+            const submitButton = document.getElementById('newsletter-submit');
+            
+            if (emailInput && submitButton) {
+              submitButton.addEventListener('click', async function() {
+                const email = emailInput.value.trim();
+                
+                if (!email || !email.includes('@')) {
+                  alert('Please enter a valid email address');
+                  return;
+                }
+                
+                submitButton.disabled = true;
+                submitButton.textContent = 'Subscribing...';
+                
+                try {
+                  const response = await fetch('/api/newsletter/subscribe', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email }),
+                  });
+                  
+                  const data = await response.json();
+                  
+                  if (data.success) {
+                    alert('Thank you for subscribing! Check your inbox for a welcome email.');
+                    emailInput.value = '';
+                  } else {
+                    alert(data.error || 'Failed to subscribe. Please try again.');
+                  }
+                } catch (error) {
+                  alert('An error occurred. Please try again.');
+                } finally {
+                  submitButton.disabled = false;
+                  submitButton.textContent = 'Subscribe';
+                }
+              });
+              
+              emailInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                  submitButton.click();
+                }
+              });
+            }
+          })();
+        `
+      }} />
 
       {/* CTA Section */}
       <section className="py-20 bg-cream">

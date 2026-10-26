@@ -1,17 +1,149 @@
-import { getSupabaseAdmin } from '@/lib/db'
+import { getSupabaseAdmin, supabaseQueryWithTimeout } from '@/lib/db'
 import { Plus, Edit, Trash2, Eye, EyeOff, ExternalLink } from 'lucide-react'
 import Link from 'next/link'
 
 export const revalidate = 0
 
+// Mock data for tools
+const mockTools = [
+  {
+    id: '1',
+    title: 'Brother Electronic Sewing Machine',
+    description: 'The most basic machine I recommend. This is a perfectly adequate machine to start your sewing journey.',
+    category: 'Essential Tools',
+    image_url: 'https://m.media-amazon.com/images/I/71VRNHd6sTL._AC_SL1500_.jpg',
+    amazon_url: 'https://www.amazon.com/dp/B00JBKVN8S',
+    active: true,
+    created_at: '2024-01-15T00:00:00Z',
+  },
+  {
+    id: '2',
+    title: 'Steam Iron',
+    description: 'High-quality iron with powerful steam, helps iron fabric quickly and efficiently.',
+    category: 'Essential Tools',
+    image_url: 'https://m.media-amazon.com/images/I/61vJd+YoSQL._AC_SL1500_.jpg',
+    amazon_url: 'https://www.amazon.com/dp/B00L9J4L0A',
+    active: true,
+    created_at: '2024-01-14T00:00:00Z',
+  },
+  {
+    id: '3',
+    title: 'Self-Healing Cutting Mat',
+    description: 'Professional cutting mat 24" x 36", self-healing surface protects your rotary cutter blade.',
+    category: 'Essential Tools',
+    image_url: 'https://m.media-amazon.com/images/I/71xQHqL8VoL._AC_SL1500_.jpg',
+    amazon_url: 'https://www.amazon.com/dp/B07MPB4GN4',
+    active: true,
+    created_at: '2024-01-13T00:00:00Z',
+  },
+  {
+    id: '4',
+    title: 'Rotary Cutter',
+    description: 'Essential tool for cutting fabric accurately and efficiently. Sharp blade, easy to replace.',
+    category: 'Essential Tools',
+    image_url: 'https://m.media-amazon.com/images/I/61KvVHqW8LL._AC_SL1500_.jpg',
+    amazon_url: 'https://www.amazon.com/dp/B000BNLLHW',
+    active: true,
+    created_at: '2024-01-12T00:00:00Z',
+  },
+  {
+    id: '5',
+    title: 'Fabric Scissors',
+    description: 'Sharp 8-inch fabric scissors with ergonomic design for easy and precise cutting.',
+    category: 'Essential Tools',
+    image_url: 'https://m.media-amazon.com/images/I/61Y+pqGqVyL._AC_SL1500_.jpg',
+    amazon_url: 'https://www.amazon.com/dp/B00006IFN9',
+    active: true,
+    created_at: '2024-01-11T00:00:00Z',
+  },
+  {
+    id: '6',
+    title: 'Quilting Ruler',
+    description: 'Clear ruler with precise markings, ideal for measuring and cutting fabric accurately.',
+    category: 'Essential Tools',
+    image_url: 'https://m.media-amazon.com/images/I/71nJRGQdJeL._AC_SL1500_.jpg',
+    amazon_url: 'https://www.amazon.com/dp/B001AQXZZ8',
+    active: true,
+    created_at: '2024-01-10T00:00:00Z',
+  },
+  {
+    id: '7',
+    title: 'Fabric Pins',
+    description: 'Box of 100 high-quality pins with round heads, won\'t damage fabric.',
+    category: 'Other Supplies',
+    image_url: 'https://m.media-amazon.com/images/I/71zKqNvLGgL._AC_SL1500_.jpg',
+    amazon_url: 'https://www.amazon.com/dp/B00114PXJW',
+    active: true,
+    created_at: '2024-01-09T00:00:00Z',
+  },
+  {
+    id: '8',
+    title: 'Wristband Pin Cushion',
+    description: 'Convenient wrist strap to hold pins, keeps pins within reach while sewing.',
+    category: 'Other Supplies',
+    image_url: 'https://m.media-amazon.com/images/I/71QqXVqLvPL._AC_SL1500_.jpg',
+    amazon_url: 'https://www.amazon.com/dp/B016TJHNHS',
+    active: true,
+    created_at: '2024-01-08T00:00:00Z',
+  },
+  {
+    id: '9',
+    title: 'Measuring Tape',
+    description: 'Flexible 60-inch tape measure, dual-sided with inches and cm, essential for measuring.',
+    category: 'Other Supplies',
+    image_url: 'https://m.media-amazon.com/images/I/71hqYXqLVbL._AC_SL1500_.jpg',
+    amazon_url: 'https://www.amazon.com/dp/B0001DSIVY',
+    active: true,
+    created_at: '2024-01-07T00:00:00Z',
+  },
+  {
+    id: '10',
+    title: 'Multi-Color Thread Set',
+    description: 'Set of 24 multi-color thread spools, high quality, suitable for all sewing projects.',
+    category: 'Other Supplies',
+    image_url: 'https://m.media-amazon.com/images/I/81vZKGZ8YnL._AC_SL1500_.jpg',
+    amazon_url: 'https://www.amazon.com/dp/B07FKDXNQD',
+    active: true,
+    created_at: '2024-01-06T00:00:00Z',
+  },
+  {
+    id: '11',
+    title: 'Fabric Marking Pens',
+    description: 'Set of self-erasing fabric markers, leaves no trace, ideal for marking seam lines.',
+    category: 'Other Supplies',
+    image_url: 'https://m.media-amazon.com/images/I/71kQqXqLvPL._AC_SL1500_.jpg',
+    amazon_url: 'https://www.amazon.com/dp/B07FKDXNQD',
+    active: false,
+    created_at: '2024-01-05T00:00:00Z',
+  },
+  {
+    id: '12',
+    title: 'Thread Snips',
+    description: 'Compact 4-inch scissors, sharp, perfect for cutting excess thread and small details.',
+    category: 'Other Supplies',
+    image_url: 'https://m.media-amazon.com/images/I/61Y+pqGqVyL._AC_SL1500_.jpg',
+    amazon_url: 'https://www.amazon.com/dp/B000YZVGQQ',
+    active: true,
+    created_at: '2024-01-04T00:00:00Z',
+  },
+]
+
 export default async function AdminToolsPage() {
   const supabase = getSupabaseAdmin()
 
-  const { data: tools, error } = await supabase
-    .from('tools')
-    .select('*')
-    .order('category', { ascending: true })
-    .order('created_at', { ascending: false })
+  const result = await supabaseQueryWithTimeout(
+    supabase
+      .from('tools')
+      .select('*')
+      .order('category', { ascending: true })
+      .order('created_at', { ascending: false }),
+    5000,
+    { data: [] }
+  )
+  const toolsData = result.data
+
+  // Use mock data if no data from Supabase
+  const tools = toolsData && toolsData.length > 0 ? toolsData : mockTools
 
   return (
     <div className="p-8">

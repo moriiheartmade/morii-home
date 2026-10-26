@@ -1,4 +1,4 @@
-# Hướng dẫn sử dụng Google Drive cho Morii Home
+# Hướng dẫn sử dụng Google Drive cho Morii Heartmade
 
 ## Tại sao dùng Google Drive?
 
@@ -51,7 +51,7 @@ https://drive.google.com/thumbnail?id=1ABC123xyz456&sz=w1000
 ## Cấu trúc thư mục đề xuất
 
 ```
-Morii Home/
+Morii Heartmade/
 ├── Pattern Covers/
 │   ├── simple-apron-cover.jpg
 │   ├── tote-bag-cover.jpg

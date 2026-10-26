@@ -1,4 +1,4 @@
-import { getSupabaseAdmin } from '@/lib/db'
+import { getSupabaseAdmin, supabaseQueryWithTimeout } from '@/lib/db'
 import { formatCurrency } from '@/lib/utils'
 import { DollarSign, CheckCircle, XCircle, Clock, Search } from 'lucide-react'
 
@@ -47,10 +47,15 @@ const mockPayments = [
 export default async function AdminPaymentsPage() {
   const supabase = getSupabaseAdmin()
 
-  const { data: paymentsData } = await supabase
-    .from('payments')
-    .select('*, orders(order_code, customer_email)')
-    .order('created_at', { ascending: false })
+  const result = await supabaseQueryWithTimeout(
+    supabase
+      .from('payments')
+      .select('*, orders(order_code, customer_email)')
+      .order('created_at', { ascending: false }),
+    5000,
+    { data: [] }
+  )
+  const paymentsData = result.data
 
   // Use mock data if Supabase returns no data
   const payments = paymentsData && paymentsData.length > 0 ? paymentsData : mockPayments

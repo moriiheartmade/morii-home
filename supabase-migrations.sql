@@ -212,6 +212,121 @@ CREATE TABLE reviews (
 );
 
 -- ============================================
+-- EMAIL SUBSCRIBERS TABLE (Newsletter)
+-- ============================================
+CREATE TABLE email_subscribers (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  email TEXT UNIQUE NOT NULL,
+  name TEXT,
+  
+  -- Status
+  active BOOLEAN DEFAULT true,
+  verified BOOLEAN DEFAULT false,
+  verification_token TEXT,
+  
+  -- Stats
+  email_count INTEGER DEFAULT 0,
+  last_sent_at TIMESTAMPTZ,
+  
+  -- Metadata
+  source TEXT DEFAULT 'homepage', -- homepage, checkout, admin
+  metadata JSONB,
+  
+  -- Timestamps
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  unsubscribed_at TIMESTAMPTZ
+);
+
+-- ============================================
+-- EMAIL TEMPLATES TABLE
+-- ============================================
+CREATE TABLE email_templates (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT UNIQUE NOT NULL,
+  slug TEXT UNIQUE NOT NULL,
+  description TEXT,
+  
+  -- Template content
+  subject TEXT NOT NULL,
+  html_content TEXT NOT NULL,
+  text_content TEXT,
+  
+  -- Template type
+  type TEXT CHECK (type IN ('newsletter', 'welcome', 'order_confirmation', 'other')) DEFAULT 'newsletter',
+  
+  -- Status
+  active BOOLEAN DEFAULT true,
+  
+  -- Metadata
+  variables TEXT[], -- List of available variables like {{name}}, {{email}}
+  
+  -- Timestamps
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- ============================================
+-- EMAIL CAMPAIGNS TABLE
+-- ============================================
+CREATE TABLE email_campaigns (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL,
+  template_id UUID REFERENCES email_templates(id) ON DELETE SET NULL,
+  
+  -- Campaign settings
+  subject TEXT NOT NULL,
+  html_content TEXT NOT NULL,
+  text_content TEXT,
+  
+  -- Status
+  status TEXT DEFAULT 'draft' CHECK (status IN ('draft', 'scheduled', 'sending', 'sent', 'paused')),
+  
+  -- Stats
+  total_recipients INTEGER DEFAULT 0,
+  sent_count INTEGER DEFAULT 0,
+  failed_count INTEGER DEFAULT 0,
+  
+  -- Scheduling
+  scheduled_at TIMESTAMPTZ,
+  sent_at TIMESTAMPTZ,
+  
+  -- Metadata
+  metadata JSONB,
+  
+  -- Timestamps
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- ============================================
+-- EMAIL LOGS TABLE
+-- ============================================
+CREATE TABLE email_logs (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  campaign_id UUID REFERENCES email_campaigns(id) ON DELETE SET NULL,
+  subscriber_id UUID REFERENCES email_subscribers(id) ON DELETE SET NULL,
+  template_id UUID REFERENCES email_templates(id) ON DELETE SET NULL,
+  
+  -- Email details
+  to_email TEXT NOT NULL,
+  subject TEXT NOT NULL,
+  
+  -- Status
+  status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'sent', 'failed', 'bounced')),
+  
+  -- Error details
+  error_message TEXT,
+  
+  -- Metadata
+  metadata JSONB,
+  
+  -- Timestamps
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  sent_at TIMESTAMPTZ
+);
+
+-- ============================================
 -- INDEXES for Performance
 -- ============================================
 CREATE INDEX idx_patterns_slug ON patterns(slug);
@@ -241,6 +356,23 @@ CREATE INDEX idx_blog_posts_published ON blog_posts(published);
 
 CREATE INDEX idx_reviews_pattern_id ON reviews(pattern_id);
 CREATE INDEX idx_reviews_approved ON reviews(approved);
+
+-- Email indexes
+CREATE INDEX idx_email_subscribers_email ON email_subscribers(email);
+CREATE INDEX idx_email_subscribers_active ON email_subscribers(active);
+CREATE INDEX idx_email_subscribers_verified ON email_subscribers(verified);
+
+CREATE INDEX idx_email_templates_slug ON email_templates(slug);
+CREATE INDEX idx_email_templates_type ON email_templates(type);
+CREATE INDEX idx_email_templates_active ON email_templates(active);
+
+CREATE INDEX idx_email_campaigns_status ON email_campaigns(status);
+CREATE INDEX idx_email_campaigns_template_id ON email_campaigns(template_id);
+
+CREATE INDEX idx_email_logs_campaign_id ON email_logs(campaign_id);
+CREATE INDEX idx_email_logs_subscriber_id ON email_logs(subscriber_id);
+CREATE INDEX idx_email_logs_status ON email_logs(status);
+CREATE INDEX idx_email_logs_created_at ON email_logs(created_at);
 
 -- ============================================
 -- RLS POLICIES (Row Level Security)
@@ -329,9 +461,10 @@ CREATE TRIGGER update_pattern_sales AFTER UPDATE ON orders
 INSERT INTO categories (name, slug, description, display_order) VALUES
   ('Home Decor', 'home-decor', 'Cushions, pillows, decorations and household items', 1),
   ('Bags', 'bags', 'Tote bags, crossbody bags, and more', 2),
-  ('Accessories', 'accessories', 'Pouches, wallets, and small items', 3),
-  ('Other', 'other', 'Other sewing patterns and projects', 4),
-  ('Kids', 'kids', 'Patterns for children', 5);
+  ('Keychains / Plushies', 'keychains-plushies', 'Cute keychains and plush toys', 3),
+  ('Accessories', 'accessories', 'Pouches, wallets, and small items', 4),
+  ('Other', 'other', 'Other sewing patterns and projects', 5),
+  ('Kids', 'kids', 'Patterns for children', 6);
 
 -- ============================================
 -- STORAGE BUCKETS (Run in Supabase Dashboard)

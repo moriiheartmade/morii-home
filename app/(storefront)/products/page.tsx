@@ -1,11 +1,10 @@
-import { getSupabase } from '@/lib/db'
 import ProductCard from '@/components/product-card'
 import ProductsSearchBar from '@/components/products-search-bar'
 import { mockCategories, mockPatterns } from '@/lib/mock-data'
 import { Suspense } from 'react'
 import { Scissors, Star, Users } from 'lucide-react'
 
-export const revalidate = 3600
+export const revalidate = 86400
 
 interface SearchParams {
   category?: string
@@ -19,75 +18,53 @@ const ITEMS_PER_PAGE = 24
 export default async function ProductsPage({
   searchParams,
 }: {
-  searchParams: SearchParams
+  searchParams: Promise<SearchParams>
 }) {
-  const supabase = getSupabase()
+  const params = await searchParams
 
-  // Build query
-  let query = supabase
-    .from('patterns')
-    .select('*, categories(name, slug)')
-    .eq('active', true)
+  // Use mock data directly for instant loading
+  let allPatterns = [...mockPatterns]
+  const categories = [...mockCategories]
 
   // Filter by category
-  if (searchParams.category) {
-    const { data: category } = await supabase
-      .from('categories')
-      .select('id')
-      .eq('slug', searchParams.category)
-      .single()
-    
-    if (category) {
-      query = query.eq('category_id', category.id)
-    }
+  if (params.category) {
+    allPatterns = allPatterns.filter(p => p.category === params.category)
   }
 
   // Search by query
-  if (searchParams.q) {
-    query = query.ilike('title', `%${searchParams.q}%`)
+  if (params.q) {
+    allPatterns = allPatterns.filter(p => 
+      p.title.toLowerCase().includes(params.q!.toLowerCase())
+    )
   }
 
   // Sort
-  const sort = searchParams.sort || 'featured'
+  const sort = params.sort || 'featured'
   switch (sort) {
     case 'price-low':
-      query = query.order('price', { ascending: true })
+      allPatterns.sort((a, b) => a.price - b.price)
       break
     case 'price-high':
-      query = query.order('price', { ascending: false })
+      allPatterns.sort((a, b) => b.price - a.price)
       break
     case 'newest':
-      query = query.order('created_at', { ascending: false })
+      allPatterns.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
       break
     case 'popular':
-      query = query.order('sales_count', { ascending: false })
+      allPatterns.sort((a, b) => (b.sales_count || 0) - (a.sales_count || 0))
       break
     default:
-      query = query.order('featured', { ascending: false }).order('sales_count', { ascending: false })
+      allPatterns.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0))
   }
-
-  const { data: patternsData, error: patternsError } = await query
-  const { data: categoriesData, error: categoriesError } = await supabase
-    .from('categories')
-    .select('*')
-    .order('display_order')
-
-  // Use mock data if Supabase returns no data
-  const allPatterns = patternsData && patternsData.length > 0 ? patternsData : mockPatterns
-  const categories = categoriesData && categoriesData.length > 0 ? categoriesData : mockCategories
-
-  // Handle errors gracefully
-  if (patternsError) console.warn('Using mock data for patterns')
-  if (categoriesError) console.warn('Using mock data for categories')
 
   // Count patterns per category
   const getCategoryCount = (categorySlug: string) => {
     if (!categorySlug) return allPatterns.length
-    return allPatterns.filter((p: any) => p.categories?.slug === categorySlug).length
+    return allPatterns.filter(p => p.category === categorySlug).length
   }
 
   // Pagination
-  const currentPage = parseInt(searchParams.page || '1', 10)
+  const currentPage = parseInt(params.page || '1', 10)
   const totalItems = allPatterns.length
   const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE)
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
@@ -139,7 +116,7 @@ export default async function ProductsPage({
           <a
             href="/products"
             className={`px-4 py-2 rounded-full text-sm font-medium transition-smooth ${
-              !searchParams.category 
+              !params.category 
                 ? 'bg-brown-warm text-white' 
                 : 'bg-beige text-charcoal hover:bg-brown-warm/10'
             }`}
@@ -153,7 +130,7 @@ export default async function ProductsPage({
                 key={cat.id}
                 href={`/products?category=${cat.slug}`}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-smooth ${
-                  searchParams.category === cat.slug 
+                  params.category === cat.slug 
                     ? 'bg-brown-warm text-white' 
                     : 'bg-beige text-charcoal hover:bg-brown-warm/10'
                 }`}
@@ -164,18 +141,11 @@ export default async function ProductsPage({
           })}
         </div>
 
-        {/* Results Count */}
-        <div className="mb-6">
-          <p className="text-sm text-gray">
-            {totalItems} patterns
-          </p>
-        </div>
-
         {/* Products Grid */}
         {patterns && patterns.length > 0 ? (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
             {patterns.map((pattern: any) => (
-              <ProductCard key={pattern.id} pattern={pattern} />
+              <ProductCard key={pattern.id} pattern={pattern} showCategoryDifficulty={false} />
             ))}
           </div>
         ) : (
@@ -189,12 +159,12 @@ export default async function ProductsPage({
           <div className="flex items-center justify-center gap-2 mt-12 pt-8 border-t border-beige">
             {/* Page Numbers */}
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
-              const params = new URLSearchParams()
-              if (searchParams.category) params.set('category', searchParams.category)
-              if (searchParams.sort) params.set('sort', searchParams.sort)
-              if (searchParams.q) params.set('q', searchParams.q)
-              if (page > 1) params.set('page', page.toString())
-              const href = `/products${params.toString() ? `?${params.toString()}` : ''}`
+              const urlParams = new URLSearchParams()
+              if (params.category) urlParams.set('category', params.category)
+              if (params.sort) urlParams.set('sort', params.sort)
+              if (params.q) urlParams.set('q', params.q)
+              if (page > 1) urlParams.set('page', page.toString())
+              const href = `/products${urlParams.toString() ? `?${urlParams.toString()}` : ''}`
               
               return (
                 <a
@@ -215,9 +185,9 @@ export default async function ProductsPage({
             {currentPage < totalPages && (
               <a
                 href={`/products?${new URLSearchParams({
-                  ...(searchParams.category && { category: searchParams.category }),
-                  ...(searchParams.sort && { sort: searchParams.sort }),
-                  ...(searchParams.q && { q: searchParams.q }),
+                  ...(params.category && { category: params.category }),
+                  ...(params.sort && { sort: params.sort }),
+                  ...(params.q && { q: params.q }),
                   page: (currentPage + 1).toString(),
                 }).toString()}`}
                 className="px-4 h-10 flex items-center justify-center rounded-lg text-gray hover:bg-beige transition-smooth font-medium"

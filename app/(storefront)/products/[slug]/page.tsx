@@ -1,4 +1,3 @@
-import { getSupabase } from '@/lib/db'
 import { notFound } from 'next/navigation'
 import { Star } from 'lucide-react'
 import { formatSalesCount } from '@/lib/utils'
@@ -9,9 +8,9 @@ import ProductGallery from '@/components/product-gallery'
 import ProductHighlights from '@/components/product-highlights'
 import ProductStats from '@/components/product-stats'
 import RelatedProducts from '@/components/related-products'
-import { mockPatterns } from '@/lib/mock-data'
+import { mockPatterns, mockCategories } from '@/lib/mock-data'
 
-export const revalidate = 3600
+export const revalidate = 86400
 
 export default async function ProductDetailPage({
   params,
@@ -19,30 +18,25 @@ export default async function ProductDetailPage({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
-  const supabase = getSupabase()
 
-  const { data: patternData, error } = await supabase
-    .from('patterns')
-    .select('*, categories(name, slug)')
-    .eq('slug', slug)
-    .eq('active', true)
-    .single()
-
-  // Use mock data if Supabase returns no data
-  let pattern = patternData
-  if (!pattern || error) {
-    console.warn('Using mock data for pattern:', slug)
-    pattern = mockPatterns.find(p => p.slug === slug)
-  }
+  // Use mock data directly for instant loading
+  const pattern = mockPatterns.find(p => p.slug === slug)
 
   if (!pattern) {
     notFound()
   }
 
+  // Add category info from mock data
+  const category = mockCategories.find(c => c.slug === pattern.category)
+  const patternWithCategory = {
+    ...pattern,
+    categories: category ? { name: category.name, slug: category.slug } : null
+  }
+
   // Prepare gallery images
   const galleryImages = [
-    pattern.cover_url,
-    ...(pattern.preview_images || [])
+    patternWithCategory.cover_url,
+    ...(patternWithCategory.preview_images || [])
   ].filter(Boolean) as string[]
 
   return (
@@ -54,10 +48,10 @@ export default async function ProductDetailPage({
             <div className="sticky top-20">
               <ProductGallery
                 images={galleryImages}
-                title={pattern.title}
+                title={patternWithCategory.title}
                 badges={{
-                  bestseller: pattern.bestseller,
-                  featured: pattern.featured,
+                  bestseller: patternWithCategory.bestseller,
+                  featured: patternWithCategory.featured,
                 }}
               />
             </div>
@@ -66,30 +60,30 @@ export default async function ProductDetailPage({
           {/* Right: Details */}
           <div>
             {/* Category */}
-            {pattern.categories && (
+            {patternWithCategory.categories && (
               <a
-                href={`/products?category=${pattern.categories.slug}`}
+                href={`/products?category=${patternWithCategory.categories.slug}`}
                 className="text-sm text-brown-warm hover:text-brown-dark font-medium mb-2 inline-block"
               >
-                {pattern.categories.name}
+                {patternWithCategory.categories.name}
               </a>
             )}
 
             {/* Title */}
             <h1 className="text-2xl md:text-3xl font-heading font-semibold text-black mb-3">
-              {pattern.title}
+              {patternWithCategory.title}
             </h1>
 
             {/* Rating, Sales & Difficulty */}
             <div className="flex items-center gap-2 mb-3 flex-wrap">
-              {pattern.rating_avg && pattern.rating_count > 0 && (
+              {patternWithCategory.rating_avg && patternWithCategory.rating_count > 0 && (
                 <>
                   <div className="flex items-center gap-0.5">
                     {[...Array(5)].map((_, i) => (
                       <Star
                         key={i}
                         className={`w-4 h-4 ${
-                          i < Math.round(pattern.rating_avg)
+                          i < Math.round(patternWithCategory.rating_avg)
                             ? 'fill-brown-warm text-brown-warm'
                             : 'text-beige'
                         }`}
@@ -97,23 +91,23 @@ export default async function ProductDetailPage({
                     ))}
                   </div>
                   <span className="text-sm text-gray">
-                    {pattern.rating_avg.toFixed(1)} ({pattern.rating_count} reviews)
+                    {patternWithCategory.rating_avg.toFixed(1)} ({patternWithCategory.rating_count} reviews)
                   </span>
-                  {pattern.sales_count > 0 && (
+                  {patternWithCategory.sales_count > 0 && (
                     <>
                       <span className="text-gray">•</span>
-                      <span className="text-sm text-gray">{formatSalesCount(pattern.sales_count)} sold</span>
+                      <span className="text-sm text-gray">{formatSalesCount(patternWithCategory.sales_count)} sold</span>
                     </>
                   )}
                 </>
               )}
               
               {/* Difficulty Badge */}
-              {pattern.difficulty && (
+              {patternWithCategory.difficulty && (
                 <>
-                  {(pattern.rating_avg && pattern.rating_count > 0) && <span className="text-gray">•</span>}
+                  {(patternWithCategory.rating_avg && patternWithCategory.rating_count > 0) && <span className="text-gray">•</span>}
                   <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-brown-warm/10 text-brown-warm border border-brown-warm/20`}>
-                    {pattern.difficulty === 'beginner' ? 'Beginner' : pattern.difficulty === 'intermediate' ? 'Intermediate' : 'Advanced'}
+                    {patternWithCategory.difficulty === 'beginner' ? 'Beginner' : patternWithCategory.difficulty === 'intermediate' ? 'Intermediate' : 'Advanced'}
                   </span>
                 </>
               )}
@@ -121,27 +115,27 @@ export default async function ProductDetailPage({
 
             {/* Price */}
             <div className="mb-4">
-              {pattern.sale_type && pattern.sale_type !== 'none' && pattern.sale_value ? (
+              {patternWithCategory.sale_type && patternWithCategory.sale_type !== 'none' && patternWithCategory.sale_value ? (
                 <div className="flex items-center gap-3">
                   <span className="text-2xl font-semibold text-black">
-                    ${pattern.sale_type === 'percentage' 
-                      ? (pattern.price * (1 - pattern.sale_value / 100)).toFixed(2)
-                      : (pattern.price - pattern.sale_value).toFixed(2)
+                    ${patternWithCategory.sale_type === 'percentage' 
+                      ? (patternWithCategory.price * (1 - patternWithCategory.sale_value / 100)).toFixed(2)
+                      : (patternWithCategory.price - patternWithCategory.sale_value).toFixed(2)
                     }
                   </span>
                   <span className="text-lg text-gray-400 line-through">
-                    ${pattern.price.toFixed(2)}
+                    ${patternWithCategory.price.toFixed(2)}
                   </span>
                   <span className="text-sm font-medium text-green-600">
-                    ({pattern.sale_type === 'percentage' 
-                      ? `${pattern.sale_value}% off`
-                      : `$${pattern.sale_value} off`
+                    ({patternWithCategory.sale_type === 'percentage' 
+                      ? `${patternWithCategory.sale_value}% off`
+                      : `$${patternWithCategory.sale_value} off`
                     })
                   </span>
                 </div>
               ) : (
                 <span className="text-2xl font-semibold text-black">
-                  ${pattern.price.toFixed(2)}
+                  ${patternWithCategory.price.toFixed(2)}
                 </span>
               )}
             </div>
@@ -149,7 +143,7 @@ export default async function ProductDetailPage({
             {/* Description */}
             <div className="mb-6">
               <p className="text-base text-gray leading-relaxed">
-                {pattern.description}
+                {patternWithCategory.description}
               </p>
             </div>
 
@@ -157,11 +151,11 @@ export default async function ProductDetailPage({
             <div className="mb-8">
               <ProductDetailClient
                 pattern={{
-                  id: pattern.id,
-                  slug: pattern.slug,
-                  title: pattern.title,
-                  price: pattern.price,
-                  cover_url: pattern.cover_url,
+                  id: patternWithCategory.id,
+                  slug: patternWithCategory.slug,
+                  title: patternWithCategory.title,
+                  price: patternWithCategory.price,
+                  cover_url: patternWithCategory.cover_url,
                 }}
               />
             </div>
@@ -169,7 +163,7 @@ export default async function ProductDetailPage({
             {/* Highlights - Etsy Style */}
             <div className="mb-6">
               <ProductHighlights
-                designer="Morii Home"
+                designer="Morii Heartmade"
                 fileType="PDF"
               />
             </div>
@@ -180,13 +174,13 @@ export default async function ProductDetailPage({
                 items={[
                   {
                     title: 'Item Details',
-                    content: pattern.long_description || pattern.description,
+                    content: patternWithCategory.long_description || patternWithCategory.description,
                     isHtml: true,
                   },
                   {
                     title: 'This Pattern Includes',
-                    content: pattern.whats_included && pattern.whats_included.length > 0 
-                      ? pattern.whats_included 
+                    content: patternWithCategory.whats_included && patternWithCategory.whats_included.length > 0 
+                      ? patternWithCategory.whats_included 
                       : [
                           'Detailed, beginner-friendly instructions with clear illustrations',
                           'Nested Print at Home Files (US Letter + A4 compatible) with layers',
@@ -195,28 +189,28 @@ export default async function ProductDetailPage({
                           'Detailed Video Tutorial',
                         ],
                   },
-                  ...(pattern.tools_needed && pattern.tools_needed.length > 0 || pattern.materials_needed && pattern.materials_needed.length > 0 ? [{
+                  ...(patternWithCategory.tools_needed && patternWithCategory.tools_needed.length > 0 || patternWithCategory.materials_needed && patternWithCategory.materials_needed.length > 0 ? [{
                     title: 'What You Need',
                     content: {
-                      tools: pattern.tools_needed || [],
-                      materials: pattern.materials_needed || [],
+                      tools: patternWithCategory.tools_needed || [],
+                      materials: patternWithCategory.materials_needed || [],
                     },
                   }] : []),
                   {
                     title: 'Sizing',
-                    content: pattern.sizing_info || 'This pattern includes multiple size options to fit your needs. Detailed measurements are provided in the PDF file.',
+                    content: (patternWithCategory as any).sizing_info || 'This pattern includes multiple size options to fit your needs. Detailed measurements are provided in the PDF file.',
                   },
                   {
                     title: 'Suitable Fabrics',
-                    content: pattern.suitable_fabrics || 'Recommended fabrics: Cotton, linen, canvas, denim, or any medium-weight woven fabric. Avoid stretchy fabrics unless specified in the pattern.',
+                    content: (patternWithCategory as any).suitable_fabrics || 'Recommended fabrics: Cotton, linen, canvas, denim, or any medium-weight woven fabric. Avoid stretchy fabrics unless specified in the pattern.',
                   },
                   {
                     title: 'Delivery',
-                    content: pattern.delivery_info || 'Instant Download\n\nYour files will be available to download once payment is confirmed.\n\nInstant download items don\'t accept returns, exchanges or cancellations. Please contact us about any problems with your order.',
+                    content: (patternWithCategory as any).delivery_info || 'Instant Download\n\nYour files will be available to download once payment is confirmed.\n\nInstant download items don\'t accept returns, exchanges or cancellations. Please contact us about any problems with your order.',
                   },
                   {
                     title: 'Disclaimer',
-                    content: pattern.disclaimer || 'This is a digital sewing pattern, not a finished product. You will receive a PDF file to download and print. No physical items will be shipped.\n\nAll patterns are for personal use only. Commercial use requires a separate license. [View Commercial License →](/commercial-license)',
+                    content: (patternWithCategory as any).disclaimer || 'This is a digital sewing pattern, not a finished product. You will receive a PDF file to download and print. No physical items will be shipped.\n\nAll patterns are for personal use only. Commercial use requires a separate license. [View Commercial License →](/commercial-license)',
                   },
                 ]}
               />
@@ -237,16 +231,16 @@ export default async function ProductDetailPage({
         {/* Reviews Section */}
         <div className="mt-16">
           <ProductReviews
-            rating_avg={pattern.rating_avg || 4.8}
-            rating_count={pattern.rating_count || 0}
-            sales_count={pattern.sales_count || 0}
+            rating_avg={patternWithCategory.rating_avg || 4.8}
+            rating_count={patternWithCategory.rating_count || 0}
+            sales_count={patternWithCategory.sales_count || 0}
           />
         </div>
 
         {/* You May Also Like */}
         <RelatedProducts
           products={mockPatterns}
-          currentProductId={pattern.id}
+          currentProductId={patternWithCategory.id}
         />
       </div>
     </div>

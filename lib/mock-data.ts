@@ -3,8 +3,9 @@
 export const mockCategories = [
   { id: '4', name: 'Home Decor', slug: 'home-decor', description: 'Cushions, pillows, decorations and household items', display_order: 1 },
   { id: '1', name: 'Bags', slug: 'bags', description: 'Tote bags, crossbody bags, and more', display_order: 2 },
-  { id: '3', name: 'Accessories', slug: 'accessories', description: 'Pouches, wallets, and small items', display_order: 3 },
-  { id: '2', name: 'Other', slug: 'other', description: 'Other sewing patterns and projects', display_order: 4 },
+  { id: '5', name: 'Keychains / Plushies', slug: 'keychains-plushies', description: 'Cute keychains and plush toys', display_order: 3 },
+  { id: '3', name: 'Accessories', slug: 'accessories', description: 'Pouches, wallets, and small items', display_order: 4 },
+  { id: '2', name: 'Other', slug: 'other', description: 'Other sewing patterns and projects', display_order: 5 },
 ]
 
 export const mockPatterns = [

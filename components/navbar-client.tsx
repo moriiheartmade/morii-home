@@ -16,7 +16,7 @@ export default function NavbarClient() {
           {/* Logo */}
           <Link href="/" className="flex items-center">
             <span className="font-heading text-2xl font-semibold text-black">
-              Morii Home
+              Morii Heartmade
             </span>
           </Link>
 
@@ -26,19 +26,13 @@ export default function NavbarClient() {
               href="/products"
               className="text-charcoal hover:text-brown-warm transition-smooth font-medium"
             >
-              Products
+              Sewing Patterns
             </Link>
             <Link
               href="/tools"
               className="text-charcoal hover:text-brown-warm transition-smooth font-medium"
             >
               Tools
-            </Link>
-            <Link
-              href="/learn-to-sew"
-              className="text-charcoal hover:text-brown-warm transition-smooth font-medium"
-            >
-              Learn To Sew
             </Link>
             <Link
               href="/blog"
@@ -97,7 +91,7 @@ export default function NavbarClient() {
                 className="text-charcoal hover:text-brown-warm transition-smooth font-medium py-2"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Products
+                Sewing Patterns
               </Link>
               <Link
                 href="/tools"
@@ -105,13 +99,6 @@ export default function NavbarClient() {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Tools
-              </Link>
-              <Link
-                href="/learn-to-sew"
-                className="text-charcoal hover:text-brown-warm transition-smooth font-medium py-2"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Learn To Sew
               </Link>
               <Link
                 href="/blog"

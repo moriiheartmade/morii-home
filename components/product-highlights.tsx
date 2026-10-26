@@ -7,7 +7,7 @@ interface ProductHighlightsProps {
 }
 
 export default function ProductHighlights({ 
-  designer = 'Morii Home',
+  designer = 'Morii Heartmade',
   fileType = 'PDF',
   difficulty = 'Beginner-friendly'
 }: ProductHighlightsProps) {

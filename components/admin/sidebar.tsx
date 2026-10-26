@@ -11,6 +11,8 @@ import {
   Download,
   DollarSign,
   LogOut,
+  Mail,
+  FileEdit,
 } from 'lucide-react'
 
 const navigation = [
@@ -19,6 +21,8 @@ const navigation = [
   { name: 'Orders', href: '/admin/orders', icon: ShoppingCart },
   { name: 'Payments', href: '/admin/payments', icon: DollarSign },
   { name: 'Analytics', href: '/admin/analytics', icon: BarChart3 },
+  { name: 'Newsletter', href: '/admin/newsletter', icon: Mail },
+  { name: 'Email Templates', href: '/admin/email-templates', icon: FileEdit },
   { name: 'Blog', href: '/admin/blog', icon: FileText },
   { name: 'Tools', href: '/admin/tools', icon: Download },
 ]
@@ -34,7 +38,7 @@ export default function AdminSidebar() {
   return (
     <div className="w-64 bg-charcoal text-white flex flex-col">
       <div className="p-6 border-b border-gray-700">
-        <h1 className="text-2xl font-heading font-semibold text-white">Morii Home</h1>
+        <h1 className="text-2xl font-heading font-semibold text-white">Morii Heartmade</h1>
       </div>
 
       <nav className="flex-1 p-4 space-y-1">

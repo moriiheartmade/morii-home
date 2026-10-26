@@ -28,9 +28,10 @@ interface ProductCardProps {
     featured: boolean
     difficulty?: string
   }
+  showCategoryDifficulty?: boolean
 }
 
-export default function ProductCard({ pattern }: ProductCardProps) {
+export default function ProductCard({ pattern, showCategoryDifficulty = true }: ProductCardProps) {
   // Demo sales count if not provided - use pattern.id to generate consistent value
   const salesCount = pattern.sales_count || (parseInt(pattern.id.slice(0, 8), 16) % 500) + 50
   const { addItem, openCart } = useCart()
@@ -115,8 +116,8 @@ export default function ProductCard({ pattern }: ProductCardProps) {
             {pattern.title}
           </h3>
 
-          {/* Category & Difficulty */}
-          <div className="flex items-center gap-2 mb-2 text-xs text-gray-600">
+          {/* Category & Difficulty - Hidden on products page */}
+          {/* <div className="flex items-center gap-2 mb-2 text-xs text-gray-600">
             <span className="capitalize">
               {pattern.categories?.name || pattern.category || 'Uncategorized'}
             </span>
@@ -128,7 +129,7 @@ export default function ProductCard({ pattern }: ProductCardProps) {
                 </span>
               </>
             )}
-          </div>
+          </div> */}
 
           {/* Rating & Sales */}
           <div className="flex items-center gap-2 mb-3 text-sm">

@@ -1,4 +1,4 @@
-import { getSupabaseAdmin } from '@/lib/db'
+import { getSupabaseAdmin, supabaseQueryWithTimeout } from '@/lib/db'
 import { Plus, Edit, Trash2, Eye, EyeOff, Calendar } from 'lucide-react'
 import Link from 'next/link'
 
@@ -44,10 +44,15 @@ const mockPosts = [
 export default async function AdminBlogPage() {
   const supabase = getSupabaseAdmin()
 
-  const { data: postsData, error } = await supabase
-    .from('blog_posts')
-    .select('*')
-    .order('created_at', { ascending: false })
+  const result = await supabaseQueryWithTimeout(
+    supabase
+      .from('blog_posts')
+      .select('*')
+      .order('created_at', { ascending: false }),
+    5000,
+    { data: [] }
+  )
+  const postsData = result.data
   
   // Use mock data if Supabase returns no data
   const posts = postsData && postsData.length > 0 ? postsData : mockPosts

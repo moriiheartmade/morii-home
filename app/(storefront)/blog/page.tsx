@@ -1,32 +1,14 @@
-import { getSupabase } from '@/lib/db'
 import Link from 'next/link'
 import { Calendar, Clock } from 'lucide-react'
 import { formatDate } from '@/lib/utils'
 import { mockBlogPosts } from '@/lib/mock-data'
 
-export const revalidate = 3600
+export const revalidate = 86400
 
 export default async function BlogPage() {
-  const supabase = getSupabase()
-
-  const { data: postsData } = await supabase
-    .from('blog_posts')
-    .select('*')
-    .eq('published', true)
-    .order('published_at', { ascending: false })
-
-  const { data: featuredPostData } = await supabase
-    .from('blog_posts')
-    .select('*')
-    .eq('published', true)
-    .eq('featured', true)
-    .order('published_at', { ascending: false })
-    .limit(1)
-    .single()
-
-  // Use mock data if Supabase returns no data
-  const posts = postsData && postsData.length > 0 ? postsData : mockBlogPosts
-  const featuredPost = featuredPostData || mockBlogPosts.find(p => p.featured)
+  // Use mock data directly for instant loading
+  const posts = [...mockBlogPosts]
+  const featuredPost = posts.find(p => p.featured)
 
   return (
     <div className="bg-white">

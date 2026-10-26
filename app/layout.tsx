@@ -17,7 +17,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Morii Home - Sewing Patterns for Home Decor & Handmade Business",
+  title: "Morii Heartmade - Sewing Patterns for Home Decor & Handmade Business",
   description: "PDF sewing patterns for home decor, bags, and accessories. Perfect for DIY enthusiasts and handmade business owners. Proven designs sold on Shopee.",
   keywords: ["sewing patterns", "PDF patterns", "home decor", "handmade business", "DIY", "sewing", "crafts", "shopee"],
 };

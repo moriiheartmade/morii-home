@@ -8,7 +8,7 @@ export default function AboutPage() {
       <div className="bg-cream py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-6xl font-heading font-semibold text-black mb-6">
-            About Morii Home
+            About Morii Heartmade
           </h1>
           <p className="text-xl text-gray leading-relaxed">
             One person's passion for sewing, shared with the world
@@ -25,7 +25,7 @@ export default function AboutPage() {
             </h2>
             <div className="space-y-4 text-lg text-gray leading-relaxed">
               <p>
-                Hi! I'm the creator behind Morii Home. What started as a personal love for sewing and home decor
+                Hi! I'm the creator behind Morii Heartmade. What started as a personal love for sewing and home decor
                 has grown into a passion project helping people create beautiful handmade items for their homes
                 and businesses.
               </p>

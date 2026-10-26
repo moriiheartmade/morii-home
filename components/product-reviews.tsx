@@ -140,7 +140,7 @@ export default function ProductReviews({
                     </div>
                   </div>
                   <div className="text-sm text-gray">
-                    {new Date(review.created_at).toLocaleDateString()}
+                    {new Date(review.created_at).toLocaleDateString('en-US', { month: 'numeric', day: 'numeric', year: 'numeric' })}
                   </div>
                 </div>
                 <p className="text-gray leading-relaxed">{review.comment}</p>

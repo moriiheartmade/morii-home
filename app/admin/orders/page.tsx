@@ -1,4 +1,4 @@
-import { getSupabaseAdmin } from '@/lib/db'
+import { getSupabaseAdmin, supabaseQueryWithTimeout } from '@/lib/db'
 import { formatCurrency } from '@/lib/utils'
 import { Eye, CheckCircle, Clock, XCircle, Mail } from 'lucide-react'
 import Link from 'next/link'
@@ -8,10 +8,15 @@ export const revalidate = 0
 export default async function AdminOrdersPage() {
   const supabase = getSupabaseAdmin()
 
-  const { data: orders, error } = await supabase
-    .from('orders')
-    .select('*, order_items(*, patterns(title))')
-    .order('created_at', { ascending: false })
+  const result = await supabaseQueryWithTimeout(
+    supabase
+      .from('orders')
+      .select('*, order_items(*, patterns(title))')
+      .order('created_at', { ascending: false }),
+    5000,
+    { data: [] }
+  )
+  const orders = result.data
 
   const getStatusIcon = (status: string) => {
     switch (status) {
