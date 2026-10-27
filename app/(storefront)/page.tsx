@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { ArrowRight, Scissors, Heart, Star, Package, Shirt, Home, Sparkles, KeyRound } from 'lucide-react'
 import { mockPatterns, mockCategories } from '@/lib/mock-data'
 import ProductCard from '@/components/product-card'
+import { convertDriveUrl } from '@/lib/utils'
 
 export default function HomePage() {
   // Get featured patterns
@@ -67,7 +68,7 @@ export default function HomePage() {
               </Link>
             </div>
             <img 
-              src="/images/morii-home-4.jpg" 
+              src={convertDriveUrl('https://drive.google.com/file/d/1MPiF0MI0KLpsUYpow2cP256ezzTBqJx0/view?usp=drive_link')} 
               alt="About Morii Heartmade" 
               className="rounded-lg h-96 w-full object-cover"
             />
@@ -170,7 +171,7 @@ export default function HomePage() {
               >
                 <div className="aspect-video relative">
                   <img
-                    src="/images/moriihome-1.png"
+                    src={convertDriveUrl('https://drive.google.com/file/d/1WWJ76RBipkLJ_toovyOYdiDDUZV5CPBz/view?usp=drive_link')}
                     alt="Morii Heartmade YouTube Channel"
                     className="w-full h-full object-cover"
                   />
@@ -292,7 +293,7 @@ export default function HomePage() {
               </div>
               <div className="bg-cream rounded-lg p-6">
                 <img
-                  src="/images/morii-home-5.jpg"
+                  src={convertDriveUrl('https://drive.google.com/file/d/1tnnjcOXbAW5TU3GfYhsbYrSdIW1oCfD5/view?usp=drive_link')}
                   alt="Shopee Store"
                   className="w-full rounded-lg mb-4"
                 />

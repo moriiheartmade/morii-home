@@ -1,5 +1,6 @@
 import { Heart, Star, Users, Award } from 'lucide-react'
 import Link from 'next/link'
+import { convertDriveUrl } from '@/lib/utils'
 
 export default function AboutPage() {
   return (
@@ -41,9 +42,11 @@ export default function AboutPage() {
               </p>
             </div>
           </div>
-          <div className="bg-beige rounded-lg h-96 flex items-center justify-center">
-            <p className="text-gray-light">Image: Workspace/Studio photo</p>
-          </div>
+          <img
+            src={convertDriveUrl('https://drive.google.com/file/d/1TU-sYE5s5fUtrcLU6DXoGyb0qe32lwZX/view?usp=drive_link')}
+            alt="My Story - Workspace"
+            className="rounded-lg h-96 w-full object-cover"
+          />
         </div>
 
         {/* Stats */}
@@ -115,7 +118,7 @@ export default function AboutPage() {
               className="block relative rounded-lg overflow-hidden mb-8 group"
             >
               <img
-                src="/images/morii-heartmade-1.jpg"
+                src={convertDriveUrl('https://drive.google.com/file/d/1x1X01yqh0CQE43uFWHX1BwkSzbnno0zq/view?usp=drive_link')}
                 alt="Morii Heartmade YouTube Channel"
                 className="w-full"
               />
