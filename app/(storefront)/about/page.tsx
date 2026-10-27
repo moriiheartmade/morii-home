@@ -1,5 +1,6 @@
 import { Heart, Star, Users, Award } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function AboutPage() {
   return (
@@ -108,8 +109,14 @@ export default function AboutPage() {
             Meet Me on YouTube
           </h2>
           <div className="max-w-4xl mx-auto">
-            <div className="bg-beige rounded-lg aspect-video flex items-center justify-center mb-8">
-              <p className="text-gray-light">YouTube video embed</p>
+            <div className="relative rounded-lg overflow-hidden mb-8">
+              <Image
+                src="/images/morii-heartmade-1.jpg"
+                alt="Morii Heartmade YouTube Channel"
+                width={800}
+                height={450}
+                className="w-full"
+              />
             </div>
             <a
               href="https://youtube.com/@moriiheartmade"
