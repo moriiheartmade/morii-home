@@ -61,7 +61,7 @@ export default function LearnToSewPage() {
             Free video tutorials to help you master sewing techniques and create beautiful handmade items.
           </p>
           <a
-            href="https://youtube.com/@moriiheartmade"
+            href="https://www.youtube.com/@moriiheartmade"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-brown-warm hover:text-brown-dark font-medium transition-smooth"

@@ -163,7 +163,7 @@ export default function HomePage() {
             {/* YouTube Video - 3 columns */}
             <div className="lg:col-span-3">
               <a
-                href="https://youtube.com/@moriiheartmade"
+                href="https://www.youtube.com/@moriiheartmade"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block bg-white rounded-lg overflow-hidden border border-beige hover:shadow-lg transition-smooth"
@@ -197,7 +197,7 @@ export default function HomePage() {
               </div>
 
               <a
-                href="https://youtube.com/@moriiheartmade"
+                href="https://www.youtube.com/@moriiheartmade"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 bg-brown-warm text-white px-6 py-3 rounded-lg font-medium hover:bg-brown-dark transition-smooth"

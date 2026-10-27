@@ -23,7 +23,7 @@ export default function Footer() {
                 <Mail className="w-5 h-5" />
               </a>
               <a
-                href="https://youtube.com/@moriiheartmade"
+                href="https://www.youtube.com/@moriiheartmade"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-light hover:text-white transition-smooth"

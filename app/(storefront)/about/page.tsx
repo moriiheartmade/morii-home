@@ -109,7 +109,12 @@ export default function AboutPage() {
             Meet Me on YouTube
           </h2>
           <div className="max-w-4xl mx-auto">
-            <div className="relative rounded-lg overflow-hidden mb-8">
+            <a
+              href="https://www.youtube.com/@moriiheartmade"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block relative rounded-lg overflow-hidden mb-8 group"
+            >
               <Image
                 src="/images/morii-heartmade-1.jpg"
                 alt="Morii Heartmade YouTube Channel"
@@ -117,9 +122,16 @@ export default function AboutPage() {
                 height={450}
                 className="w-full"
               />
-            </div>
+              <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/40 transition-smooth">
+                <div className="w-20 h-20 bg-red-600 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-smooth">
+                  <svg className="w-10 h-10 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                </div>
+              </div>
+            </a>
             <a
-              href="https://youtube.com/@moriiheartmade"
+              href="https://www.youtube.com/@moriiheartmade"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-brown-warm text-white px-8 py-3 rounded-lg font-medium hover:bg-brown-dark transition-smooth"
