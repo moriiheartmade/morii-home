@@ -1,6 +1,5 @@
 import { Heart, Star, Users, Award } from 'lucide-react'
 import Link from 'next/link'
-import Image from 'next/image'
 
 export default function AboutPage() {
   return (
@@ -115,11 +114,9 @@ export default function AboutPage() {
               rel="noopener noreferrer"
               className="block relative rounded-lg overflow-hidden mb-8 group"
             >
-              <Image
+              <img
                 src="/images/morii-heartmade-1.jpg"
                 alt="Morii Heartmade YouTube Channel"
-                width={800}
-                height={450}
                 className="w-full"
               />
               <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/40 transition-smooth">
