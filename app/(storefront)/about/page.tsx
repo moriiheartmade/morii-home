@@ -43,7 +43,7 @@ export default function AboutPage() {
             </div>
           </div>
           <img
-            src={convertDriveUrl('https://drive.google.com/file/d/1TU-sYE5s5fUtrcLU6DXoGyb0qe32lwZX/view?usp=drive_link')}
+            src={convertDriveUrl('https://drive.google.com/file/d/1MPiF0MI0KLpsUYpow2cP256ezzTBqJx0/view?usp=drive_link')}
             alt="My Story - Workspace"
             className="rounded-lg h-96 w-full object-cover"
           />
