@@ -83,7 +83,7 @@ export default function AboutPage() {
                 <div className="text-sm text-gray">Average Rating</div>
               </div>
               <div className="bg-white p-4 rounded-lg">
-                <div className="text-2xl font-heading font-semibold text-black mb-1">5,000+</div>
+                <div className="text-2xl font-heading font-semibold text-black mb-1">30,000+</div>
                 <div className="text-sm text-gray">Shopee Sales</div>
               </div>
               <div className="bg-white p-4 rounded-lg">
@@ -92,7 +92,7 @@ export default function AboutPage() {
               </div>
             </div>
             <a
-              href="https://shopee.vn/moriiheartmade"
+              href="https://shopee.vn/morii.byheartmade"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-brown-warm hover:text-brown-dark font-medium transition-smooth"
