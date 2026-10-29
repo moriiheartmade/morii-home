@@ -192,9 +192,9 @@ export default function AboutPage() {
                   href: '/faq',
                 },
                 {
-                  title: 'Learn to Sew',
-                  description: 'Tutorials and guides for beginners',
-                  href: '/learn-to-sew',
+                  title: 'Buy PDF Patterns',
+                  description: 'Browse and purchase our sewing patterns for your projects',
+                  href: '/products',
                 },
                 {
                   title: 'Tools & Supplies',
